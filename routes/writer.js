@@ -28,7 +28,7 @@ writer.post('/add', upload.single('avatar'), function(req, res){
     console.log(req.file);
     console.log(req.body);
     console.log(req.file.path);
-    console.log(req.category);
+    console.log(req.body.category);
     res.end();
 })
 
