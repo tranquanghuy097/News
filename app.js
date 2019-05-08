@@ -4,6 +4,7 @@ var morgan = require('morgan');
 var bodyParser = require("body-parser");
 var routes = require('./routes/index');
 var writer = require('./routes/writer')
+var path = require('path')
 
 var app = express();
 
@@ -15,10 +16,12 @@ app.engine('hbs', exphbs(
 app.set('view engine', 'hbs');
 
 app.use(morgan('dev'));
+app.use(express.static('public'));
 app.use('/', routes);
 app.use('/writer', writer);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 
 
 

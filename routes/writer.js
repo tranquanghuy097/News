@@ -13,15 +13,40 @@ var storage = multer.diskStorage({
     }
 });
 
-var upload = multer({ storage: storage })
+var upload = multer({ storage: storage });
+
+var item = {
+    category:[
+        'Crime',
+        'Military',
+        'U.N',
+        'Conflicts',
+        'Executive',
+        'Senate',
+        'Movies',
+        'TV News',
+        'Markets',
+        'Politics',
+        'Food + Drinks',
+        'Cars + Trucks',
+        'Archaeology',
+        'Planet Earth',
+        'Security',
+        'Innovation',
+        'Healthy Living',
+        'Shows',
+        'Personalities',
+    ]
+};
 
 
 writer.use(bodyParser.urlencoded({ extended: false }));
 writer.use(bodyParser.json());
+writer.use(express.static('public'));
 
 
 writer.get('/write', function(req, res){
-    res.render('write')
+    res.render('write', item)
 })
 
 writer.post('/add', upload.single('avatar'), function(req, res){

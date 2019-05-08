@@ -1,12 +1,16 @@
-<form action = '/writer/add' method="POST" enctype="multipart/form-data">
-    <input type="file" name="avatar">
-    <label for="category">Category</label>
+<form action = '/writer/add' method="POST" enctype="multipart/form-data" class = "container">
+    <h4 class = "headline">Cover Picture:</h4>
+    <br>
+    <input type="file" name="avatar" class="btn btn-dark shadow">
+    <br>
+    <label for="category"><h4 class = "headline">Category:</h4></label>
     <select class="form-control" id="category" name = "category">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-    <textarea name="content" id="editor"></textarea>
-    <button type ="submit">Submit</button>
+    {{#each category}}
+        <option>{{this}}</option>
+    {{/each}}
+    </select>
+    <h4 class = "headline">Content</h4>
+    <textarea name="content" id = "editor"></textarea>
+    <a href = "#" class="btn btn-dark shadow">Back <i class="fas fa-backward"></i></a>
+    <button type ="submit" class="btn btn-dark shadow" class = "button">Submit <i class="fas fa-check"></i></button>
 </form>
