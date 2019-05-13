@@ -3,6 +3,7 @@ var writer = express.Router();
 var bodyParser = require("body-parser");
 var multer  = require('multer');
 var path = require('path');
+var model = require('../model/model');
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -50,11 +51,25 @@ writer.get('/write', function(req, res){
 })
 
 writer.post('/add', upload.single('avatar'), function(req, res){
-    console.log(req.file);
-    console.log(req.body);
-    console.log(req.file.path);
-    console.log(req.body.category);
-    res.end();
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+
+    newdate = year + "/" + month + "/" + day;
+
+    req.body['writer'] = 'huy';
+    req.body['date'] = newdate;
+    req.body['image'] = req.file.path;
+    
+    model.add(req.body)
+        .then(id => {
+            console.log(id);
+            res.render('write', item);
+        }).catch(err => {
+            console.log(err);
+            res.end('Error Occured');
+        })
 })
 
 module.exports = writer;
