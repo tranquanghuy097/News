@@ -56,7 +56,7 @@ writer.post('/add', upload.single('avatar'), function(req, res){
     var day = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
 
-    newdate = year + "/" + month + "/" + day;
+    newdate = day + "/" + month + "/" + year;
 
     req.body['writer'] = 'huy';
     req.body['date'] = newdate;

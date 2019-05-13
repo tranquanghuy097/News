@@ -1,0 +1,13 @@
+{{#if error}}
+    <div class="alert alert-danger" role="alert">
+        Invalid ID
+    </div>
+{{else}}
+    <img src= {{this.news.image}} id = "headimg">
+    <div id = "info">
+        <p class = "info">Author: {{this.news.writer}}</p>
+        <p class = "info category">{{this.news.category}}</p>
+        <p class = "info">Publish Date: {{this.news.date}}</p>
+    </div>
+    {{{this.news.content}}}
+{{/if}}

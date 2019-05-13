@@ -17,7 +17,7 @@ app.set('view engine', 'hbs');
 
 app.use(morgan('dev'));
 app.use(express.static('public'));
-app.use('/', routes);
+app.use('/news', routes);
 app.use('/writer', writer);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
