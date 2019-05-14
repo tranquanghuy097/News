@@ -52,11 +52,11 @@ editor.get('/edit/:id', function(req, res){
         console.log(err);
         res.end('Error occured');
     })
-})
+});
 
 editor.post('/edit/update', upload.single('avatar'), function(req, res){
-    if(req.body.file != null)
-        req.body['image'] = req.file.path;
+    if(req.file)
+        req.body.image = req.file.path;
     
     model.update(req.body)
         .then(id => {
@@ -66,6 +66,17 @@ editor.post('/edit/update', upload.single('avatar'), function(req, res){
             console.log(err);
             res.end('Error Occured');
         })
+});
+
+editor.post('/edit/delete', upload.single('avatar'), function(req, res){
+     model.delete(req.body.id)
+         .then(id => {
+             console.log(id);
+             res.redirect('/editor');
+         }).catch(err => {
+             console.log(err);
+             res.end('Error Occured');
+         })
 })
 
 

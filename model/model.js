@@ -17,6 +17,10 @@ module.exports = {
         return db.update('news', 'id', entity);
     },
 
+    delete: id => {
+        return db.delete('news', 'id', id);
+    },
+
     loadnews: () => {
         return db.load('select * from news');
     }
