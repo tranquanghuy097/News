@@ -16,38 +16,18 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-var item = {
-    category:[
-        'Crime',
-        'Military',
-        'U.N',
-        'Conflicts',
-        'Executive',
-        'Senate',
-        'Movies',
-        'TV News',
-        'Markets',
-        'Politics',
-        'Food + Drinks',
-        'Cars + Trucks',
-        'Archaeology',
-        'Planet Earth',
-        'Security',
-        'Innovation',
-        'Healthy Living',
-        'Shows',
-        'Personalities',
-    ]
-};
-
-
 writer.use(bodyParser.urlencoded({ extended: false }));
 writer.use(bodyParser.json());
 writer.use(express.static('public'));
 
 
 writer.get('/write', function(req, res){
-    res.render('write', item)
+    var subcategory = model.loadsubCat();
+    subcategory.then(rows => {
+        res.render('writer/write', {
+            subcategory: rows,
+        })
+    })
 })
 
 writer.post('/add', upload.single('avatar'), function(req, res){
@@ -65,7 +45,7 @@ writer.post('/add', upload.single('avatar'), function(req, res){
     model.add(req.body)
         .then(id => {
             console.log(id);
-            res.render('write', item);
+            res.redirect('/write');
         }).catch(err => {
             console.log(err);
             res.end('Error Occured');

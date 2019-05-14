@@ -2,8 +2,9 @@ var express = require('express');
 var exphbs  = require('express-handlebars');
 var morgan = require('morgan');
 var bodyParser = require("body-parser");
-var routes = require('./routes/index');
-var writer = require('./routes/writer')
+var news = require('./routes/news');
+var writer = require('./routes/writer');
+var editor = require('./routes/editor')
 var path = require('path')
 
 var app = express();
@@ -17,8 +18,9 @@ app.set('view engine', 'hbs');
 
 app.use(morgan('dev'));
 app.use(express.static('public'));
-app.use('/news', routes);
+app.use('/news', news);
 app.use('/writer', writer);
+app.use('/editor', editor);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

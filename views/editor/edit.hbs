@@ -1,0 +1,23 @@
+<form action = '/editor/edit/update' method="POST" enctype="multipart/form-data">
+    <label for="id"><h4 class = "headline">ID:</h4></label>
+    <input type="text" name="id" id = "id" value = {{this.news.id}} readonly>
+    <br>
+    <h4 class = "headline">Cover Picture:</h4>
+    <br>
+    <input type="file" name="avatar" class="btn btn-dark shadow">
+    <br>
+    <label for="title"><h4 class = "headline">Title:</h4></label>
+    <input type="text" name="title" id = "title">
+    <br>
+    <label for="subcategory"><h4 class = "headline">Category:</h4></label>
+    <select class="form-control" id="subcategory" name = "subcategory">
+    {{#each this.subcategory}}
+        <option {{#if isActive}}selected{{/if}}>{{name}}</option>
+    {{/each}}
+    </select>
+    <h4 class = "headline">Content</h4>
+    <textarea name="content" id = "editor">{{this.news.content}}</textarea>
+    <a href = "#" class="btn btn-dark shadow">Back <i class="fas fa-backward"></i></a>
+    <button type = "submit" class="btn btn-dark shadow" formaction="/editor/delete">Delete <i class="fa fa-times" aria-hidden="true"></i></button>
+    <button type ="submit" class="btn btn-dark shadow" class = "button">Submit <i class="fas fa-check"></i></button>
+</form>

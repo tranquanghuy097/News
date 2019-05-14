@@ -3,10 +3,10 @@
     <br>
     <input type="file" name="avatar" class="btn btn-dark shadow">
     <br>
-    <label for="category"><h4 class = "headline">Category:</h4></label>
-    <select class="form-control" id="category" name = "category">
-    {{#each category}}
-        <option>{{this}}</option>
+    <label for="subcategory"><h4 class = "headline">Category:</h4></label>
+    <select class="form-control" id="subcategory" name = "subcategory">
+    {{#each this.subcategory}}
+        <option>{{name}}</option>
     {{/each}}
     </select>
     <h4 class = "headline">Content</h4>
