@@ -96,6 +96,8 @@ editor.post('/addeditor', function(req, res){
         })
 })
 
-
+editor.get('/signin', function(req,res){
+    res.render('editor/signin')
+})
 
 module.exports = editor;

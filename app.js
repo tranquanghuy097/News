@@ -24,7 +24,18 @@ app.use('/editor', editor);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use((req, res, next) =>{
+    res.render('404', {layout: false});
+})
 
+app.use((error, req, res, next) => {
+    res.render('error', 
+    {
+        layout: false,
+        message: error.message,
+        error
+    })
+})
 
 
 app.listen(8080, function(){

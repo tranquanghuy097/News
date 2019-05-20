@@ -41,6 +41,22 @@ module.exports = {
         })
     },
 
+    user: (tableName, entity) => {
+        return new Promise ((resolve, reject) =>{
+            var sql = `select * from ${tableName} where ?`;
+            var connection = createConnection();
+            connection.connect();
+            connection.query(sql, entity, (error, result, fields) => {
+                if(error)
+                    reject(error);
+                else{
+                    resolve(result);
+                }
+                connection.end();
+            })
+        })
+    },
+
     add: (tableName, entity) => {
         return new Promise ((resolve, reject) =>{
             var sql = `insert into ${tableName} set ?`;
