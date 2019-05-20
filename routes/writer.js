@@ -48,14 +48,10 @@ writer.post('/add', upload.single('avatar'), function(req, res){
         .then(id => {
             console.log(id);
             res.redirect('writer/write');
-        }).catch(err => {
-            console.log(err);
-            res.end('Error Occured');
-        })
+        }).catch(next)
 })
 
 writer.get('/signup', function(req, res){
-    throw new Error('bomb');
     res.render('writer/signup')
 })
 
@@ -67,7 +63,7 @@ writer.post('/addwriter', function(req, res){
         }).catch(err => {
             console.log(err);
             res.end('Error Occured');
-        })
+        }).catch(next)
 })
 
 writer.get('/signin', function(req,res){
@@ -89,7 +85,7 @@ writer.post('/sign', function(req, res){
                 error: true,
             })
         }
-    })
+    }).catch(next)
 })
 
 

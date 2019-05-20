@@ -26,7 +26,7 @@ editor.get('/', function(req, res){
         res.render('editor/home', {
             news: rows,
         })
-    })
+    }).catch(next)
 });
 
 
@@ -49,10 +49,7 @@ editor.get('/edit/:id', function(req, res){
                 error: true,
             })
         }
-    }).catch(err => {
-        console.log(err);
-        res.end('Error occured');
-    })
+    }).catch(next)
 });
 
 editor.post('/edit/update', upload.single('avatar'), function(req, res){
@@ -63,10 +60,7 @@ editor.post('/edit/update', upload.single('avatar'), function(req, res){
         .then(id => {
             console.log(id);
             res.redirect('/editor');
-        }).catch(err => {
-            console.log(err);
-            res.end('Error Occured');
-        })
+        }).catch(next)
 });
 
 editor.post('/edit/delete', upload.single('avatar'), function(req, res){
@@ -74,10 +68,7 @@ editor.post('/edit/delete', upload.single('avatar'), function(req, res){
          .then(id => {
              console.log(id);
              res.redirect('/editor');
-         }).catch(err => {
-             console.log(err);
-             res.end('Error Occured');
-         })
+         }).catch(next)
 })
 
 editor.get('/signup', function(req, res){
@@ -90,10 +81,7 @@ editor.post('/addeditor', function(req, res){
         .then(id => {
             console.log(id);
             res.redirect('/writer/signup');
-        }).catch(err => {
-            console.log(err);
-            res.end('Error Occured');
-        })
+        }).catch(next)
 })
 
 editor.get('/signin', function(req,res){
