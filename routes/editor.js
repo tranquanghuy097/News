@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var multer  = require('multer');
 var path = require('path');
 var model = require('../model/model');
+var account = require('../model/editorModel')
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -77,6 +78,22 @@ editor.post('/edit/delete', upload.single('avatar'), function(req, res){
              console.log(err);
              res.end('Error Occured');
          })
+})
+
+editor.get('/signup', function(req, res){
+    res.render('editor/signup')
+})
+
+
+editor.post('/addeditor', function(req, res){
+    account.add(req.body)
+        .then(id => {
+            console.log(id);
+            res.redirect('/writer/signup');
+        }).catch(err => {
+            console.log(err);
+            res.end('Error Occured');
+        })
 })
 
 

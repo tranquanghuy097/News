@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var multer  = require('multer');
 var path = require('path');
 var model = require('../model/model');
+var account = require('../model/writersModel')
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -45,11 +46,28 @@ writer.post('/add', upload.single('avatar'), function(req, res){
     model.add(req.body)
         .then(id => {
             console.log(id);
-            res.redirect('/write');
+            res.redirect('writer/write');
         }).catch(err => {
             console.log(err);
             res.end('Error Occured');
         })
 })
+
+writer.get('/signup', function(req, res){
+    res.render('writer/signup')
+})
+
+writer.post('/addwriter', function(req, res){
+    account.add(req.body)
+        .then(id => {
+            console.log(id);
+            res.redirect('/writer/signup');
+        }).catch(err => {
+            console.log(err);
+            res.end('Error Occured');
+        })
+})
+
+
 
 module.exports = writer;
