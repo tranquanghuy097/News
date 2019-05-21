@@ -4,7 +4,9 @@ var bodyParser = require("body-parser");
 var multer  = require('multer');
 var path = require('path');
 var model = require('../model/model');
-var account = require('../model/editorModel')
+var account = require('../model/editorModel');
+var login = false;
+var user;
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -21,16 +23,21 @@ editor.use(bodyParser.urlencoded({ extended: false }));
 editor.use(bodyParser.json());
 editor.use(express.static('public'));
 
-editor.get('/', function(req, res){
-    model.loadnews().then(rows => {
-        res.render('editor/home', {
-            news: rows,
-        })
-    }).catch(next)
-});
+editor.get('/', function(req,res){
+    if(login == false)
+        res.render('editor/signin')
+    else
+         res.render('editor/account', {
+            user: user
+         })
+})
 
 
 editor.get('/edit/:id', function(req, res){
+    if(login == false)
+        res.render('editor/signin')
+    else
+    {
     var subcategory = model.loadsubCat();
     var id = req.params.id;
     model.byID(id).then(rows => {
@@ -50,6 +57,7 @@ editor.get('/edit/:id', function(req, res){
             })
         }
     }).catch(next)
+    }
 });
 
 editor.post('/edit/update', upload.single('avatar'), function(req, res){
@@ -86,6 +94,24 @@ editor.post('/addeditor', function(req, res){
 
 editor.get('/signin', function(req,res){
     res.render('editor/signin')
+})
+
+editor.post('/login', function(req, res, next){
+    account.getUser(req.body.name, req.body.password).then(rows => {
+        if(rows.length > 0)
+        {
+            user = rows[0];
+            login = true;
+            res.render('editor/account', {
+                user: user
+            })
+        }
+        else{
+            res.render('editor/signin', {
+                error: true,
+            })
+        }
+    }).catch(next)
 })
 
 module.exports = editor;

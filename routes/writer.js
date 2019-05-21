@@ -6,6 +6,7 @@ var path = require('path');
 var model = require('../model/model');
 var account = require('../model/writersModel');
 var user;
+var login = false;
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -16,23 +17,28 @@ var storage = multer.diskStorage({
     }
 });
 
-var upload = multer({ storage: storage });
-
 writer.use(bodyParser.urlencoded({ extended: false }));
 writer.use(bodyParser.json());
 writer.use(express.static('public'));
 
+var upload = multer({ storage: storage });
+
 
 writer.get('/write', function(req, res){
-    var subcategory = model.loadsubCat();
-    subcategory.then(rows => {
-        res.render('writer/write', {
-            subcategory: rows,
+    if(login == false)
+        res.render('writer/signin')
+    else
+    {
+        var subcategory = model.loadsubCat();
+        subcategory.then(rows => {
+            res.render('writer/write', {
+                subcategory: rows,
+            })
         })
-    })
+    }
 })
 
-writer.post('/add', upload.single('avatar'), function(req, res){
+writer.post('/add', upload.single('avatar'), function(req, res, next){
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
@@ -40,14 +46,15 @@ writer.post('/add', upload.single('avatar'), function(req, res){
 
     newdate = day + "/" + month + "/" + year;
 
-    req.body['writer'] = 'huy';
+    req.body['writer'] = user.penname;
     req.body['date'] = newdate;
-    req.body['image'] = req.file.path;
+    if(req.file)
+        req.body['image'] = req.file.path;
     
     model.add(req.body)
         .then(id => {
             console.log(id);
-            res.redirect('writer/write');
+            res.redirect('/writer/write');
         }).catch(next)
 })
 
@@ -55,7 +62,7 @@ writer.get('/signup', function(req, res){
     res.render('writer/signup')
 })
 
-writer.post('/addwriter', function(req, res){
+writer.post('/addwriter', function(req, res, next){
     account.add(req.body)
         .then(id => {
             console.log(id);
@@ -66,16 +73,21 @@ writer.post('/addwriter', function(req, res){
         }).catch(next)
 })
 
-writer.get('/signin', function(req,res){
-    res.render('writer/signin')
+writer.get('/', function(req,res){
+    if(login == false)
+        res.render('writer/signin')
+    else
+         res.render('writer/account', {
+            user: user
+         })
 })
 
-writer.post('/sign', function(req, res){
-    console.log(req.body)
-    account.getUser(req.body).then(rows => {
+writer.post('/login', function(req, res, next){
+    account.getUser(req.body.name, req.body.password).then(rows => {
         if(rows.length > 0)
         {
-            user = rows;
+            user = rows[0];
+            login = true;
             res.render('writer/account', {
                 user: user
             })
@@ -86,6 +98,11 @@ writer.post('/sign', function(req, res){
             })
         }
     }).catch(next)
+})
+
+writer.post('/logout', function(req, res) {
+    login = false;
+    res.render('writer/signin')
 })
 
 

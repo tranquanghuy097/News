@@ -5,7 +5,7 @@ module.exports = {
         return db.add("writer", entity);
     },
 
-    getUser: entity => {
-        return db.user('writer', entity);
+    getUser: (name, password) => {
+        return db.user('writer', name, password);
     }
 }
