@@ -5,8 +5,8 @@ var multer  = require('multer');
 var path = require('path');
 var model = require('../model/model');
 var account = require('../model/writersModel');
+var session = require('express-session');
 var user;
-var login = false;
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -20,12 +20,18 @@ var storage = multer.diskStorage({
 writer.use(bodyParser.urlencoded({ extended: false }));
 writer.use(bodyParser.json());
 writer.use(express.static('public'));
+writer.use(session({
+	secret: 'secret',
+	resave: true,
+    saveUninitialized: true,
+}));
 
 var upload = multer({ storage: storage });
 
 
 writer.get('/write', function(req, res){
-    if(login == false)
+    console.log(req.session.loggedin)
+    if(!req.session.loggedin)
         res.render('writer/signin')
     else
     {
@@ -74,7 +80,7 @@ writer.post('/addwriter', function(req, res, next){
 })
 
 writer.get('/', function(req,res){
-    if(login == false)
+    if(!req.session.loggedin)
         res.render('writer/signin')
     else
          res.render('writer/account', {
@@ -87,7 +93,8 @@ writer.post('/login', function(req, res, next){
         if(rows.length > 0)
         {
             user = rows[0];
-            login = true;
+            req.session.loggedin = true;
+			req.session.username = req.body.name;
             res.render('writer/account', {
                 user: user
             })
@@ -101,7 +108,7 @@ writer.post('/login', function(req, res, next){
 })
 
 writer.post('/logout', function(req, res) {
-    login = false;
+    req.session.loggedin = false;
     res.render('writer/signin')
 })
 

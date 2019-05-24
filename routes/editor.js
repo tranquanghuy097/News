@@ -3,9 +3,10 @@ var editor = express.Router();
 var bodyParser = require("body-parser");
 var multer  = require('multer');
 var path = require('path');
+var session = require('express-session');
 var model = require('../model/model');
 var account = require('../model/editorModel');
-var login = false;
+var session = require('express-session');
 var user;
 
 var storage = multer.diskStorage({
@@ -22,10 +23,15 @@ var upload = multer({ storage: storage });
 editor.use(bodyParser.urlencoded({ extended: false }));
 editor.use(bodyParser.json());
 editor.use(express.static('public'));
+editor.use(session({
+	secret: 'secret',
+	resave: true,
+    saveUninitialized: true,
+}));
 
 editor.get('/', function(req,res){
-    if(login == false)
-        res.render('editor/signin')
+    if(!req.session.loggedin)
+        res.render('writer/signin')
     else
          res.render('editor/account', {
             user: user
@@ -34,8 +40,8 @@ editor.get('/', function(req,res){
 
 
 editor.get('/edit/:id', function(req, res){
-    if(login == false)
-        res.render('editor/signin')
+    if(!req.session.loggedin)
+         res.render('writer/signin')
     else
     {
     var subcategory = model.loadsubCat();
@@ -101,7 +107,8 @@ editor.post('/login', function(req, res, next){
         if(rows.length > 0)
         {
             user = rows[0];
-            login = true;
+            req.session.loggedin = true;
+			req.session.username = req.body.name;
             res.render('editor/account', {
                 user: user
             })
@@ -113,5 +120,11 @@ editor.post('/login', function(req, res, next){
         }
     }).catch(next)
 })
+
+editor.post('/logout', function(req, res) {
+    req.session.loggedin = false;
+    res.render('writer/signin')
+})
+
 
 module.exports = editor;
