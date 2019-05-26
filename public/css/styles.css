@@ -100,3 +100,15 @@
 .d-block:hover{
     opacity: 1;
 }
+
+.special{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.thumbnail {
+    width: 100px;
+    height: 100px;
+    margin-right: 5px;
+}
+

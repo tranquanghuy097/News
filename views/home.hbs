@@ -1,5 +1,5 @@
 <h1>Home</h1>
-<div class="bd-example">
+<div class="bd-example shadow">
   <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
       <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
@@ -20,8 +20,8 @@
             <h5 class = "information">{{title}}</h5>
             <p class = "information">{{subcategory}}</p>
             <p class = "information">{{date}}</p>
+            </div>
         </a>
-        </div>
       </div>
       {{/each}}
     <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
@@ -33,4 +33,19 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
+</div>
+<h3>Newest</h3>
+<div class="list-group">
+  {{#each newest}}
+        <a href="/news/{{id}}" class="list-group-item list-group-item-action">
+        <div class = "special">
+         <img src= {{image}} class="thumbnail" alt={{title}}>
+         <div>
+            <h5 class = "information">{{title}}</h5>
+            <p class = "information">{{subcategory}}</p>
+            <p class = "information">{{date}}</p>
+         </div>
+          </div>
+  </a>
+  {{/each}}
 </div>
