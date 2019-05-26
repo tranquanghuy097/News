@@ -5,9 +5,9 @@
 {{else}}
     <img src= {{this.news.image}} id = "headimg">
     <div id = "info">
-        <p class = "info">Author: {{this.news.writer}}</p>
-        <p class = "info category">{{this.news.category}}</p>
-        <p class = "info">Publish Date: {{this.news.date}}</p>
+        <p class = "information">Author: {{this.news.writer}}</p>
+        <p class = "information">{{this.news.subcategory}}</p>
+        <p class = "information">Publish Date: {{this.news.date}}</p>
     </div>
     {{{this.news.content}}}
 {{/if}}

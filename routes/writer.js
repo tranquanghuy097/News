@@ -30,7 +30,6 @@ var upload = multer({ storage: storage });
 
 
 writer.get('/write', function(req, res){
-    console.log(req.session.loggedin)
     if(!req.session.loggedin)
         res.render('writer/signin')
     else
@@ -45,6 +44,7 @@ writer.get('/write', function(req, res){
 })
 
 writer.post('/add', upload.single('avatar'), function(req, res, next){
+    console.log(req.file)
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
@@ -55,7 +55,7 @@ writer.post('/add', upload.single('avatar'), function(req, res, next){
     req.body['writer'] = user.penname;
     req.body['date'] = newdate;
     if(req.file)
-        req.body['image'] = req.file.path;
+        req.body['image'] = 'images\\' + req.file.filename;
     
     model.add(req.body)
         .then(id => {

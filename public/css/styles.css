@@ -38,10 +38,11 @@
     margin-top: 5px;
 }
 
-.category{
+.information{
     border: 1px black solid;
     color: white;
     background-color: black;
+    margin-right: 5px;
 }
 
 .form
@@ -52,4 +53,50 @@
     margin-top: 5px;
     border: 1px black solid;
     padding: 5px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+  outline: black;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-image: none;
+}
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 55px;
+  color: red;
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 55px;
+  color: red;
+}
+
+.carousel-indicators
+{
+    background-color: black;
+}
+
+.carousel-indicators .active{
+    background-color: #f00;
+}
+
+.d-block{
+    width: 500px;
+    height: 500px;
+}
+
+.d-block{
+    opacity: 0.5;
+}
+
+.d-block:hover{
+    opacity: 1;
 }
