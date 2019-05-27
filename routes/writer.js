@@ -44,7 +44,6 @@ writer.get('/write', function(req, res){
 })
 
 writer.post('/add', upload.single('avatar'), function(req, res, next){
-    console.log(req.file)
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();

@@ -41,11 +41,18 @@ index.get('/:cat', function(req, res, next) {
                 var obj = {value: i, active: i === +page};
                 pages.push(obj);
             }
-            console.log(pages)
+            var prevpage = {
+                pos: page - 1,
+                deactive: page - 1 < 1};
+            var nextpage = {
+                    pos: page + 1,
+                    deactive: page + 1 > nPage};
             res.render('category', {
                 category: cat,
                 news: rows,
                 pages,
+                prevpage,
+                nextpage
             })
         })
         .catch(next)
