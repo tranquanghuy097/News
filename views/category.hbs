@@ -1,0 +1,30 @@
+<h1>{{category}}</h1>
+<div class="list-group">
+{{#each news}}
+        <a href="/news/{{id}}" class="list-group-item list-group-item-action">
+        <div class = "special">
+         <img src= {{image}} class="thumbnail" alt={{title}}>
+         <div>
+            <h5 class = "information">{{title}}</h5>
+            <p class = "information">{{subcategory}}</p>
+            <p class = "information">{{date}}</p>
+         </div>
+          </div>
+  </a>
+{{/each}}
+</div>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    {{#each this.pages}}
+    {{#if active}}
+       <li class="page-item active" aria-current="page">
+         <a class="page-link" href="?page={{value}}">{{value}} <span class="sr-only">(current)</span></a>
+      </li>
+    {{else}}
+        <li class="page-item"><a class="page-link" href="?page={{value}}">{{value}}</a></li>
+    {{/if}}
+    {{/each}}
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
