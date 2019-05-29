@@ -41,12 +41,12 @@ module.exports = {
         })
     },
 
-    user: (tableName, name, password) => {
+    user: (tableName, name) => {
         return new Promise ((resolve, reject) =>{
-            var sql = `select * from ${tableName} where name = ? and password = ?`;
+            var sql = `select * from ${tableName} where name = ?`;
             var connection = createConnection();
             connection.connect();
-            connection.query(sql, [name, password], (error, result, fields) => {
+            connection.query(sql, [name], (error, result, fields) => {
                 if(error)
                     reject(error);
                 else{

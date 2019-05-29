@@ -88,15 +88,23 @@ writer.get('/', function(req,res){
 })
 
 writer.post('/login', function(req, res, next){
-    account.getUser(req.body.name, req.body.password).then(rows => {
+    account.getUser(req.body.name).then(rows => {
         if(rows.length > 0)
         {
-            user = rows[0];
-            req.session.loggedin = true;
-			req.session.username = req.body.name;
-            res.render('writer/account', {
-                user: user
-            })
+            if(bcrypt.compareSync(req.body.password, rows[0].password))
+            {
+                user = rows[0];
+                req.session.loggedin = true;
+			    req.session.username = req.body.name;
+                res.render('writer/account', {
+                    user: user
+                })
+            }
+            else{
+                res.render('writer/signin', {
+                    error: true,
+                })
+            }
         }
         else{
             res.render('writer/signin', {

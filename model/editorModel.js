@@ -5,7 +5,7 @@ module.exports = {
         return db.add("editor", entity);
     },
 
-    getUser: (name, password) => {
-        return db.user('editor', name, password);
+    getUser: (name) => {
+        return db.user('editor', name);
     }
 }

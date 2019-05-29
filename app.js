@@ -6,23 +6,29 @@ var index = require('./routes/index');
 var news = require('./routes/news');
 var writer = require('./routes/writer');
 var editor = require('./routes/editor');
-var path = require('path')
+var express_handlebars_sections = require('express-handlebars-sections');
+ 
 
 var app = express();
 
 app.engine('hbs', exphbs(
-    {extname:'hbs',
+    {
+    extname:'hbs',
     layoutsDir: __dirname + '/views/_layout/',
-    defaultLayout: 'main'}));
+    defaultLayout: 'main',
+    helpers:{
+        section: express_handlebars_sections(),
+    }
+    }));
 
 app.set('view engine', 'hbs');
 
 app.use(morgan('dev'));
 app.use(express.static('public'));
-app.use('/', index)
 app.use('/news', news);
 app.use('/writer', writer);
 app.use('/editor', editor);
+app.use('/', index)
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

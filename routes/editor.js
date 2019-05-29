@@ -7,6 +7,8 @@ var session = require('express-session');
 var model = require('../model/model');
 var account = require('../model/editorModel');
 var session = require('express-session');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 var user;
 
 var storage = multer.diskStorage({
@@ -31,7 +33,7 @@ editor.use(session({
 
 editor.get('/', function(req,res){
     if(!req.session.loggedin)
-        res.render('writer/signin')
+        res.render('editor/signin')
     else
          res.render('editor/account', {
             user: user
@@ -90,8 +92,15 @@ editor.get('/signup', function(req, res){
 })
 
 
-editor.post('/addeditor', function(req, res){
-    account.add(req.body)
+editor.post('/addeditor', function(req, res, next){
+    var hash = bcrypt.hashSync(req.body.password, saltRounds);
+    var user = {
+        name: req.body.name,
+        password: hash,
+        email: req.body.email,
+        birthday: req.body.birthday,
+    }
+    account.add(user)
         .then(id => {
             console.log(id);
             res.redirect('/writer/signup');
@@ -103,15 +112,23 @@ editor.get('/signin', function(req,res){
 })
 
 editor.post('/login', function(req, res, next){
-    account.getUser(req.body.name, req.body.password).then(rows => {
+    account.getUser(req.body.name).then(rows => {
         if(rows.length > 0)
         {
-            user = rows[0];
-            req.session.loggedin = true;
-			req.session.username = req.body.name;
-            res.render('editor/account', {
-                user: user
-            })
+            if(bcrypt.compareSync(req.body.password, rows[0].password))
+            {
+                user = rows[0];
+                req.session.loggedin = true;
+			    req.session.username = req.body.name;
+                res.render('editor/account', {
+                    user: user
+                })
+            }
+            else{
+                res.render('editor/signin', {
+                    error: true,
+                })
+            }
         }
         else{
             res.render('editor/signin', {

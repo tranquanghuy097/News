@@ -36,23 +36,23 @@ index.get('/:cat', function(req, res, next) {
             var nPage = Math.floor(total / limit);
             if(total % limit > 0)
                 nPage++;
+            var prevpage = {
+                pos: page - 1,
+                deactive: page - 1 < 1};
+            var nextpage = {
+                pos: page + 1,
+                deactive: page + 1 > nPage};
             var pages = [];
             for(i = 1; i <= nPage; i++){
                 var obj = {value: i, active: i === +page};
                 pages.push(obj);
             }
-            var prevpage = {
-                pos: page - 1,
-                deactive: page - 1 < 1};
-            var nextpage = {
-                    pos: page + 1,
-                    deactive: page + 1 > nPage};
             res.render('category', {
                 category: cat,
                 news: rows,
                 pages,
                 prevpage,
-                nextpage
+                nextpage,
             })
         })
         .catch(next)

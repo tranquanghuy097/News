@@ -1,16 +1,80 @@
-<form action='/editor/addeditor' method="POST" class = "form">
+{{#section 'js'}}
+  <script src = "https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
+  <script>
+    $().ready(function(){
+      $("#signupform").validate({
+        rules:{
+          name: {
+            required: true,
+            minlength: 5,
+          },
+          email: {
+            required: true,
+            email: true,
+          },
+          password: {
+            required: true,
+            minlength: 5,
+          },
+          conpassword: {
+            required: true,
+            minlength: 5,
+            equalTo: "#password"
+          },
+          birthday: {
+            required: true,
+          },
+        },
+        messages: {
+          name: {
+            required: 'Required',
+            minlength: 'Must be at least 5 characters',
+          },
+          email: {
+            required: 'Required',
+            email: 'Must be an email',
+          },
+          password: {
+            required: 'Required',
+            minlength: 'Must be at least 5 characters',
+          },
+           conpassword: {
+            required: 'Required',
+            minlength: 'Must be at least 5 characters',
+            equalTo: 'Not the same password'
+          },
+          birthday: {
+            required: 'Required',
+          },
+        },
+        highlight: function (element, errorClass) {
+          $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function (element, errorClass) {
+          $(element).closest('.form-group').removeClass('has-error');
+        },
+      });
+    });
+  </script>
+
+{{/section}}
+<form action='/editor/addeditor' method="POST" class = "form" id = "signupform">
   <div class="form-group">
     <label for="name">Name</label>
     <input type="text" class="form-control" id="name" name = "name" placeholder="Name">
   </div>
   <div class="form-group">
     <label for="Email">Email</label>
-    <input type="email" class="form-control" id="Email" name = "email" aria-describedby="emailHelp" placeholder="Enter email">
+    <input type="text" class="form-control" id="Email" name = "email" aria-describedby="emailHelp" placeholder="Enter email">
     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
   </div>
   <div class="form-group">
     <label for="Password">Password</label>
-    <input type="password" class="form-control" id="Password" name = "password" placeholder="Password">
+    <input type="password" class="form-control" id="password" name = "password" placeholder="Password">
+  </div>
+  <div class="form-group">
+    <label for="ConPassword">Confirm Password</label>
+    <input type="password" class="form-control" id="ConPassword" name = "conpassword" placeholder="Confirm Password">
   </div>
   <div class="form-group">
     <label for="bdate">Birthday</label>
