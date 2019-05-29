@@ -141,7 +141,21 @@ editor.post('/login', function(req, res, next){
 editor.post('/logout', function(req, res) {
     req.session.loggedin = false;
     res.render('writer/signin')
-})
+});
 
+editor.post('/user-exist', function(req, res, next){
+    console.log('req.body.name')
+    account.getUser(req.body.name).then(rows => {
+        if(rows.length > 0)
+        {
+            return res.json('true');
+        }
+        else
+        {
+            return res.json('false');
+        }
+        }
+    ).catch(next)
+})
 
 module.exports = editor;

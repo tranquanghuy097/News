@@ -6,6 +6,8 @@ var path = require('path');
 var model = require('../model/model');
 var account = require('../model/writersModel');
 var session = require('express-session');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 var user;
 
 var storage = multer.diskStorage({
@@ -68,7 +70,15 @@ writer.get('/signup', function(req, res){
 })
 
 writer.post('/addwriter', function(req, res, next){
-    account.add(req.body)
+    var hash = bcrypt.hashSync(req.body.password, saltRounds);
+    var info = {
+        name: req.body.name,
+        penname: req.body.penname,
+        password: hash,
+        email: req.body.email,
+        birthday: req.body.birthday,
+    }
+    account.add(info)
         .then(id => {
             console.log(id);
             res.redirect('/writer/signup');

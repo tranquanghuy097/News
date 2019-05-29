@@ -7,6 +7,14 @@
           name: {
             required: true,
             minlength: 5,
+            remote: {
+              type: 'post',
+              url: 'editor/user-exist',
+              data: {
+                'name': function () { return $('#name').val(); }
+              },
+              dataType: 'json'
+            }
           },
           email: {
             required: true,
@@ -29,6 +37,7 @@
           name: {
             required: 'Required',
             minlength: 'Must be at least 5 characters',
+            remote: "Name already in use",
           },
           email: {
             required: 'Required',
