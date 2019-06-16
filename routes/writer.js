@@ -86,9 +86,6 @@ writer.post('/addwriter', function(req, res, next){
         .then(id => {
             console.log(id);
             res.redirect('/writer/signin');
-        }).catch(err => {
-            console.log(err);
-            res.end('Error Occured');
         }).catch(next)
 })
 

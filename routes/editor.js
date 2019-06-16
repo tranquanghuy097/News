@@ -33,7 +33,7 @@ editor.use(session({
 
 editor.get('/', function(req,res){
     if(!req.session.loggedin)
-        res.render('editor/signin')
+        res.redirect('/editor/signin')
     else
          res.render('editor/account', {
             user: user
@@ -43,7 +43,7 @@ editor.get('/', function(req,res){
 
 editor.get('/edit/:id', function(req, res){
     if(!req.session.loggedin)
-         res.render('writer/signin')
+         res.redirect('/editor/signin')
     else
     {
     var subcategory = model.loadsubCat();
@@ -94,16 +94,16 @@ editor.get('/signup', function(req, res){
 
 editor.post('/addeditor', function(req, res, next){
     var hash = bcrypt.hashSync(req.body.password, saltRounds);
-    var user = {
+    var info = {
         name: req.body.name,
         password: hash,
         email: req.body.email,
         birthday: req.body.birthday,
     }
-    account.add(user)
+    account.add(info)
         .then(id => {
             console.log(id);
-            res.redirect('/writer/signup');
+            res.redirect('/editor/signin');
         }).catch(next)
 })
 
@@ -120,9 +120,7 @@ editor.post('/login', function(req, res, next){
                 user = rows[0];
                 req.session.loggedin = true;
 			    req.session.username = req.body.name;
-                res.render('editor/account', {
-                    user: user
-                })
+                res.redirect('/editor/')
             }
             else{
                 res.render('editor/signin', {
@@ -140,22 +138,9 @@ editor.post('/login', function(req, res, next){
 
 editor.post('/logout', function(req, res) {
     req.session.loggedin = false;
-    res.render('editor/signin')
+    user = null;
+    req.session.username = null;
+    res.redirect('/editor/signin');
 });
-
-editor.get('/user-exist', function(req, res, next){
-    var name = req.query.name
-    account.getUser(name).then(rows => {
-        if(rows.length === 0)
-        {
-            return res.json(true);
-        }
-        else
-        {
-            return res.json(false);
-        }
-    }
-    ).catch(next)
-})
 
 module.exports = editor;

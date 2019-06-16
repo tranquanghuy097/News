@@ -8,9 +8,6 @@
           name: {
             required: true,
             minlength: 5,
-            remote: {
-              url: '/editor/user-exist',
-            }
           },
           email: {
             required: true,
@@ -61,7 +58,6 @@
       });
     });
   </script>
-
 {{/section}}
 <form action='/editor/addeditor' method="POST" class = "form" id = "signupform">
   <div class="form-group">
@@ -85,6 +81,6 @@
     <label for="bdate">Birthday</label>
     <input type="date" class="form-control" id="bdate" name = "birthday">
   </div>
-  <a href = "#" class = "btn btn-dark shadow">Back</a>
+  <a href = "/editor/" class = "btn btn-dark shadow">Back</a>
   <button type="submit" class="btn btn-dark shadow">Sign Up</button>
 </form>

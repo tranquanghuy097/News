@@ -16,4 +16,16 @@ module.exports = {
     countCat: (category) => {
         return db.load(`select count(*) as total from news where subcategory = '${category}'`)
     },
+
+    addComment: entity => {
+        return db.add("comment", entity);
+    },
+
+    loadComment: (id, limit, offset) => {
+        return db.load(`select * from comment where newsid = '${id}' order by id desc limit ${limit} offset ${offset}`)
+    },
+
+    countComment: (id) => {
+        return db.load(`select count(*) as total from comment where newsid = '${id}'`)
+    },
 }
