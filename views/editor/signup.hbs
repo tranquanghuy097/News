@@ -1,5 +1,6 @@
 {{#section 'js'}}
   <script src = "https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
+  <script src = "https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.js"></script>
   <script>
     $().ready(function(){
       $("#signupform").validate({
@@ -8,12 +9,7 @@
             required: true,
             minlength: 5,
             remote: {
-              type: 'post',
-              url: 'editor/user-exist',
-              data: {
-                'name': function () { return $('#name').val(); }
-              },
-              dataType: 'json'
+              url: '/editor/user-exist',
             }
           },
           email: {

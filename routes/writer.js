@@ -33,7 +33,7 @@ var upload = multer({ storage: storage });
 
 writer.get('/write', function(req, res){
     if(!req.session.loggedin)
-        res.render('writer/signin')
+        res.redirect('/writer/signin')
     else
     {
         var subcategory = model.loadsubCat();
@@ -43,6 +43,10 @@ writer.get('/write', function(req, res){
             })
         })
     }
+})
+
+writer.get('/signin', (req, res) => {
+    res.render('writer/signin');
 })
 
 writer.post('/add', upload.single('avatar'), function(req, res, next){
@@ -81,7 +85,7 @@ writer.post('/addwriter', function(req, res, next){
     account.add(info)
         .then(id => {
             console.log(id);
-            res.redirect('/writer/signup');
+            res.redirect('/writer/signin');
         }).catch(err => {
             console.log(err);
             res.end('Error Occured');
@@ -90,7 +94,7 @@ writer.post('/addwriter', function(req, res, next){
 
 writer.get('/', function(req,res){
     if(!req.session.loggedin)
-        res.render('writer/signin')
+        res.redirect('/writer/signin')
     else
          res.render('writer/account', {
             user: user

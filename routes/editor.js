@@ -140,21 +140,21 @@ editor.post('/login', function(req, res, next){
 
 editor.post('/logout', function(req, res) {
     req.session.loggedin = false;
-    res.render('writer/signin')
+    res.render('editor/signin')
 });
 
-editor.post('/user-exist', function(req, res, next){
-    console.log('req.body.name')
-    account.getUser(req.body.name).then(rows => {
-        if(rows.length > 0)
+editor.get('/user-exist', function(req, res, next){
+    var name = req.query.name
+    account.getUser(name).then(rows => {
+        if(rows.length === 0)
         {
-            return res.json('true');
+            return res.json(true);
         }
         else
         {
-            return res.json('false');
+            return res.json(false);
         }
-        }
+    }
     ).catch(next)
 })
 
