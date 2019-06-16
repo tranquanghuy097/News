@@ -31,12 +31,12 @@
         <li class="page-item"><a class="page-link" href="?page={{value}}">{{value}}</a></li>
     {{/if}}
     {{/each}}
-    {{#if this.nextpage.deactive}}
+    {{#if this.lastpage.deactive}}
       <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Last</a>
       </li>
     {{else}}
-      <li class="page-item"><a class="page-link" href="?page={{this.nextpage.pos}}">Next</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{this.lastpage.pos}}">Last</a></li>
     {{/if}}
   </ul>
 </nav>

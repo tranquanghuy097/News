@@ -5,3 +5,45 @@
 <form action = '/writer/logout' method="POST">
     <button type="submit" class="btn btn-dark shadow">Log Out</button>
 </form>
+<h3>Written News:</h3>
+<div class="list-group">
+{{#each news}}
+        <a href="/news/{{id}}" class="list-group-item list-group-item-action">
+        <div class = "special">
+         <img src= {{image}} class="thumbnail" alt={{title}}>
+         <div>
+            <h5 class = "information">{{title}}</h5>
+            <p class = "information">{{subcategory}}</p>
+            <p class = "information">{{date}}</p>
+         </div>
+          </div>
+  </a>
+{{/each}}
+</div>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {{#if this.prevpage.deactive}}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+    {{else}}
+      <li class="page-item"><a class="page-link" href="?page={{this.prevpage.pos}}">Previous</a></li>
+    {{/if}}
+    {{#each this.pages}}
+    {{#if active}}
+       <li class="page-item active" aria-current="page">
+         <a class="page-link" href="?page={{value}}">{{value}} <span class="sr-only">(current)</span></a>
+      </li>
+    {{else}}
+        <li class="page-item"><a class="page-link" href="?page={{value}}">{{value}}</a></li>
+    {{/if}}
+    {{/each}}
+    {{#if this.lastpage.deactive}}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Last</a>
+      </li>
+    {{else}}
+      <li class="page-item"><a class="page-link" href="?page={{this.lastpage.pos}}">Last</a></li>
+    {{/if}}
+  </ul>
+</nav>

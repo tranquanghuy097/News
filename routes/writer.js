@@ -92,13 +92,47 @@ writer.post('/addwriter', function(req, res, next){
         }).catch(next)
 })
 
-writer.get('/', function(req,res){
+writer.get('/', function(req,res,next){
     if(!req.session.loggedin)
         res.redirect('/writer/signin')
     else
-         res.render('writer/account', {
-            user: user
-         })
+    {
+        var name = user.penname;
+        var page = req.query.page || 1;
+        var limit = 10;
+
+        if(page < 1)
+            page = 1;
+        var offset = (page - 1) * limit;
+
+        Promise.all([account.loadbyWriter(name, limit, offset),
+                account.countNews(name)])
+        .then(([rows, count_rows]) => {
+            var total = count_rows[0].total;
+            var nPage = Math.floor(total / limit);
+            if(total % limit > 0)
+                nPage++;
+            var prevpage = {
+                pos: page - 1,
+                deactive: page - 1 < 1};
+            var lastpage = {
+                pos: nPage,
+                deactive: page == nPage};
+            var pages = [];
+            for(i = 1; i <= nPage; i++){
+                var obj = {value: i, active: i === +page};
+                pages.push(obj);
+            }
+            res.render('writer/account', {
+                user: user,
+                news: rows,
+                pages,
+                prevpage,
+                lastpage,
+            })
+        })
+        .catch(next)
+    }
 })
 
 writer.post('/login', function(req, res, next){
@@ -110,9 +144,7 @@ writer.post('/login', function(req, res, next){
                 user = rows[0];
                 req.session.loggedin = true;
 			    req.session.username = req.body.name;
-                res.render('writer/account', {
-                    user: user
-                })
+                res.redirect('/writer/');
             }
             else{
                 res.render('writer/signin', {
@@ -130,6 +162,8 @@ writer.post('/login', function(req, res, next){
 
 writer.post('/logout', function(req, res) {
     req.session.loggedin = false;
+    req.session.username = null;
+    user = null;
     res.render('writer/signin')
 })
 

@@ -39,9 +39,9 @@ index.get('/:cat', function(req, res, next) {
             var prevpage = {
                 pos: page - 1,
                 deactive: page - 1 < 1};
-            var nextpage = {
-                pos: page + 1,
-                deactive: page + 1 > nPage};
+            var lastpage = {
+                pos: nPage,
+                deactive: page == nPage};
             var pages = [];
             for(i = 1; i <= nPage; i++){
                 var obj = {value: i, active: i === +page};
@@ -52,7 +52,7 @@ index.get('/:cat', function(req, res, next) {
                 news: rows,
                 pages,
                 prevpage,
-                nextpage,
+                lastpage,
             })
         })
         .catch(next)
